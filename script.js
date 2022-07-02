@@ -1,84 +1,45 @@
-//TODO figure out how to add the array elements to 3 rows in a group of 3 in order to have a 3x3 square.
+// Steps 1,2,3 are done. Need to start on 4.
+//game board will run the game(switch turns from p1 to p2..., check if win conditions are met ,place marks x||o, reset game, track winner)
+//display board will... display board, reset board, show win message.)
+const personFactory = (name, selection) => {
+    
+    return {name, selection};
+};
 
 const gameBoard = (function () {
-  let gameBoard = [
-    ["x"],
-    ["o"],
-    ["x"],
-    ["o"],
-    ["x"],
-    ["o"],
-    ["x"],
-    ["o"],
-    ["x"],
-  ];
+    const playerOne = personFactory('Player One', 'x');
+    const playerTwo = personFactory('Player Two', 'o');
 
-  /**
-   * ? This can create a 3x3 grid but currently does not have the array...
-   * ? ...elements linked to each square.
-   */
-   let count = 0;
-  function _createGrid(x) {
-    for (let i = 0; i < x; i++) {
-        const row = document.createElement('div');
-        row.setAttribute('class', 'row');
-        container.appendChild(row);
-        for (let i = 0; i < x; i++) {
-            const cell = document.createElement('div');
-            cell.setAttribute('class', 'cell');
-            row.appendChild(cell);
-            cell.addEventListener('click', () => {
-               
-                if(count % 2 == 0){
-                    cell.style.background = 'blue';
-                    cell.innerHTML = 'x';
-                    console.log(count);
-                    count++;
-                } else if(count % 2 == 1) {
-                    cell.style.background = 'yellow';
-                    cell.innerHTML = 'o';
-                    count++;
-                }
-            
-            })
-        }
-    }
-  }
+    let gameArr = 
+    ['x','o','x',
+     'o','x','o', 
+     'o','x','o'];
 
-  // Create an unordered list
-  var list = document.createElement("div");
+          
 
-  // Create a list item for each selection
-  // and append it to the list
-  gameBoard.forEach(function (selection) {
-    var li = document.createElement("div");
-    li.textContent = selection;
-    list.appendChild(li);
-  });
-
-  // Log
-  console.log(list);
-
-  // Inject into the DOM
-  var app = document.querySelector("#container");
-  app.appendChild(list);
-
-
-
-  return {
-    createdGrid: function () {
-      _createGrid(3);
-    },
-  };
+    return {gameArr};
 })();
 
-const playerCreation = (name) => {
-  
-    const p1Welcome = () =>
-    console.log("Logging in.... Welcome! " + name + " is player 1.");
+const displayController = (function () {
+    
+    const display = () => {
+        const gameArr = gameBoard.gameArr;
+        const gameDiv = document.getElementById("game-board");
 
-  const p2Welcome = () =>
-    console.log("Logging in.... Welcome! " + name + " is player 2.");
+        for (let index = 0; index < gameArr.length; index++) {
+            const selection = gameArr[index];
+            const boxElement = document.createElement("div");
+            boxElement.classList.add(`game-box`);
+            boxElement.setAttribute('data-index-number', index+1);
+            boxElement.textContent = selection;
+            gameDiv.append(boxElement);    
+        }
+        
+    }
+    
+    return {display};
+})();
 
-  return { name, p1Welcome, p2Welcome };
-};
+
+
+displayController.display();
