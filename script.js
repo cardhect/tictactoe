@@ -11,13 +11,13 @@ const gameBoard = (function () {
     const playerTwo = personFactory('Player Two', 'o');
 
     let gameArr = 
-    ['x','o','x',
-     'o','x','o', 
-     'o','x','o'];
+    ['','','',
+     '','','', 
+     '','',''];
 
           
 
-    return {gameArr};
+    return {gameArr,playerOne,playerTwo};
 })();
 
 const displayController = (function () {
@@ -26,13 +26,38 @@ const displayController = (function () {
         const gameArr = gameBoard.gameArr;
         const gameDiv = document.getElementById("game-board");
 
+        let i = 0;
+
         for (let index = 0; index < gameArr.length; index++) {
             const selection = gameArr[index];
-            const boxElement = document.createElement("div");
+            const boxElement = document.createElement("button");
             boxElement.classList.add(`game-box`);
             boxElement.setAttribute('data-index-number', index+1);
             boxElement.textContent = selection;
             gameDiv.append(boxElement);    
+            
+            
+            boxElement.addEventListener("click", function(e){
+                //selection == data-index-number
+                let boxDataIndexNum = e.target.attributes[1].value
+                //returns selected div by using the data index number.
+                const selectedBox = document.querySelector(`[data-index-number="${boxDataIndexNum}"]`);
+                console.log(selectedBox);
+                //this is not working -- i am trying to figure out logic for selections by not letting user pick a square that is taken.
+                // if (i%2 == 1 && gameArr[selectedBox] == '' ) {
+                //    selectedBox.textContent = 'o';   
+                //     i++;
+                // } else if (i%2 != 1 && gameArr[selectedBox] == '' ) {
+                //     console.log(i);
+                //     selectedBox.textContent = 'x';
+                //     i++;
+                // } 
+                // if (i == 9) {
+                //     console.log('game is over');                    
+                // }
+                //selectedBox.textContent = 'x';
+            })
+
         }
         
     }
