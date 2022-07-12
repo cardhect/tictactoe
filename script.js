@@ -5,7 +5,7 @@ const personFactory = (name, selection) => {
    let winner = 0;
 	return { name, selection, winner };
 };
-console.log(gameBoard.turnCounter);
+
 const gameBoard = (function () {
 	const playerOne = personFactory("Player One", "x");
 	const playerTwo = personFactory("Player Two", "o");
@@ -39,83 +39,83 @@ const gameBoard = (function () {
 		let winConditionO = "ooo";
 		switch (winConditionX) {
 			case winCon1:
-				alert("You win! X");
+				console.log(gameBoard.playerOne.name + ' Wins!');
                 gameBoard.playerOne.winner = 1;
                 displayController.winnersMessage();
 				break;
 			case winCon2:
-				alert("You win! X");
+				console.log(gameBoard.playerOne.name + ' Wins!');
                 gameBoard.playerOne.winner = 1;
                 displayController.winnersMessage();
 				break;
 			case winCon3:
-				alert("You win! X");
+				console.log(gameBoard.playerOne.name + ' Wins!');
                 gameBoard.playerOne.winner = 1;
                 displayController.winnersMessage();
 				break;
 			case winCon4:
-				alert("You win! X");
+				console.log(gameBoard.playerOne.name + ' Wins!');
                 gameBoard.playerOne.winner = 1;
                 displayController.winnersMessage();
 				break;
 			case winCon5:
-				alert("You win! X");
+				console.log(gameBoard.playerOne.name + ' Wins!');
                 gameBoard.playerOne.winner = 1;
                 displayController.winnersMessage();
 				break;
 			case winCon6:
-				alert("You win! X");
+				console.log(gameBoard.playerOne.name + ' Wins!');
                 gameBoard.playerOne.winner = 1;
                 displayController.winnersMessage();
 				break;
 			case winCon7:
-				alert("You win! X");
+				console.log(gameBoard.playerOne.name + ' Wins!');
                 gameBoard.playerOne.winner = 1;
                 displayController.winnersMessage();
 				break;
 			case winCon8:
-				alert("You win! X");
+				console.log(gameBoard.playerOne.name + ' Wins!');
                 gameBoard.playerOne.winner = 1;
                 displayController.winnersMessage();
 			default:
 				switch (winConditionO) {
 					case winCon1:
-						alert("You win! O!");
+						console.log("player two Wins!");
                         gameBoard.playerTwo.winner = 1;
                         displayController.winnersMessage();
 						break;
 					case winCon2:
-						alert("You win! O!");
+						console.log("player two Wins!");
                         gameBoard.playerTwo.winner = 1;
                         displayController.winnersMessage();
 						break;
 					case winCon3:
-						alert("You win! O!");
+						console.log("player two Wins!");
                         gameBoard.playerTwo.winner = 1;
                         displayController.winnersMessage();
 						break;
 					case winCon4:
-						alert("You win! O!");
+						console.log("player two Wins!");
                         gameBoard.playerTwo.winner = 1;
                         displayController.winnersMessage();
 						break;
 					case winCon5:
-						alert("You win! O!");
+						console.log("player two Wins!");
                         gameBoard.playerTwo.winner = 1;
                         displayController.winnersMessage();
 						break;
 					case winCon6:
-						alert("You win! O!");
+						console.log("player two Wins!");
                         gameBoard.playerTwo.winner = 1;
                         displayController.winnersMessage();
 						break;
 					case winCon7:
-						alert("You win! O!");
+						console.log("player two Wins!");
                         gameBoard.playerTwo.winner = 1;
                         displayController.winnersMessage();
 						break;
 					case winCon8:
-						alert("You win! O!");
+						console.log("player two Wins!");
                         gameBoard.playerTwo.winner = 1;
                         displayController.winnersMessage();
 					default:
@@ -178,7 +178,7 @@ const displayController = (function () {
         const h2 = document.createElement('h2');
         const playerName = gameBoard.playerOne.name;
 		h2.setAttribute('id','turn-message');
-        h2.textContent = `${playerName}, its your turn.'`
+        h2.textContent = `${playerName}, its your turn.`
 		
 		body.append(h2);
       
@@ -229,7 +229,7 @@ const displayController = (function () {
 					gameBoard.turnCounter++;
 					console.log(gameBoard.turnCounter);
                     //changes h2 to say this->
-                    h2.textContent = `player 2, its your turn.'`
+                    h2.textContent = `player 2, its your turn.`
 
 				} else {
 					console.log("Spot is taken. Pick another.");
@@ -245,4 +245,4 @@ const displayController = (function () {
 	return { display, nameSelect, hideForm, winnersMessage };
 })();
 
-displayController.display();
+// displayController.display();
