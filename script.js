@@ -23,17 +23,14 @@ const gameBoard = (function () {
 	//Uses switch statement to check if any of the win conditions are met. It defaults to a tie if there is no winner by the end. If game is not finished it will default to a console message telling users game is not over
 	const checkWinner = () => {
 		//win conditions 0,1,2 - 3,4,5 - 6,7,8 - 0,3,6 - 1,4,7 - 2,5,8 - 0,4,8 - 2,4,6 (also each can win in reversed order.)
-		const winCon1 = gameArr[0] + gameArr[1] + gameArr[2];
-		const winCon2 = gameArr[3] + gameArr[4] + gameArr[5];
-		const winCon3 = gameArr[6] + gameArr[7] + gameArr[8];
-		const winCon4 = gameArr[0] + gameArr[3] + gameArr[6];
-		const winCon5 = gameArr[1] + gameArr[4] + gameArr[7];
-		const winCon6 = gameArr[2] + gameArr[5] + gameArr[8];
-		const winCon7 = gameArr[0] + gameArr[4] + gameArr[8];
-		const winCon8 = gameArr[2] + gameArr[4] + gameArr[6];
-
-
-        let arr =[[1,3,4],[2,3,4]] 
+		const winCon1 = gameBoard.gameArr[0] + gameBoard.gameArr[1] + gameBoard.gameArr[2];
+		const winCon2 = gameBoard.gameArr[3] + gameBoard.gameArr[4] + gameBoard.gameArr[5];
+		const winCon3 = gameBoard.gameArr[6] + gameBoard.gameArr[7] + gameBoard.gameArr[8];
+		const winCon4 = gameBoard.gameArr[0] + gameBoard.gameArr[3] + gameBoard.gameArr[6];
+		const winCon5 = gameBoard.gameArr[1] + gameBoard.gameArr[4] + gameBoard.gameArr[7];
+		const winCon6 = gameBoard.gameArr[2] + gameBoard.gameArr[5] + gameBoard.gameArr[8];
+		const winCon7 = gameBoard.gameArr[0] + gameBoard.gameArr[4] + gameBoard.gameArr[8];
+		const winCon8 = gameBoard.gameArr[2] + gameBoard.gameArr[4] + gameBoard.gameArr[6];
 
 
 		let winConditionX = "xxx";
@@ -196,6 +193,10 @@ const displayController = (function () {
 	}
 
 	const display = () => {
+		//2 == x which is  player one. 1 == o which is player 2.
+		let playersTurn = 2;
+		let turnCount = 0;
+
 		//Reset button
 		const resetButton = document.createElement("button")
 		resetButton.setAttribute('id','reset');
@@ -211,17 +212,22 @@ const displayController = (function () {
 		body.append(h2);
 		body.append(resetButton);
 		
-      
+		//resets i to 2 so player one always goes first when reset button is clicked.
+		resetButton.addEventListener('click', () => {
+			playersTurn = 2;
+			console.log('i was reset to ' + playersTurn);
+			h2.textContent = `${playerName}, its your turn.`;
+		})
 
-		let i = 2;
-		let turnCount = 0;
+		
+
 		
 
 		for (let index = 0; index < gameBoard.gameArr.length; index++) {
 			//This creates the box play area.
 			const selection = gameBoard.gameArr[index];
 			const boxElement = document.createElement("button");
-        
+			
 
 
 			boxElement.classList.add(`game-box`);
@@ -237,36 +243,37 @@ const displayController = (function () {
 				const selectedBox = document.querySelector(
 					`[data-index-number="${boxDataIndexNum}"]`
 				);
-
+				
+				
 				// This checks if square is empty. if it is then it is marked with a X or O. It also checks if square is marked, if it is it does not let user place a marker.
 
-				if (i % 2 == 1 && gameBoard.gameArr[boxDataIndexNum - 1] == "") {
+				if (playersTurn % 2 == 1 && gameBoard.gameArr[boxDataIndexNum - 1] == "") {
 					console.log("O was marked");
 					gameBoard.gameArr[boxDataIndexNum - 1] = "o";
-					console.log(gameBoard.gameArr + " " + i);
+					console.log(gameBoard.gameArr + " " + playersTurn);
 					selectedBox.textContent = "o";
-					i = 2;
+					playersTurn = 2;
 					turnCount++;
 					gameBoard.turnCounter++;
 					console.log(gameBoard.turnCounter);
                     //changes h2 to say this->
                     h2.textContent = `${playerName}, its your turn.`
 
-				} else if (i % 2 != 1 && gameBoard.gameArr[boxDataIndexNum - 1] == "") {
+				} else if (playersTurn % 2 != 1 && gameBoard.gameArr[boxDataIndexNum - 1] == "") {
                     console.log("X was marked");
 					gameBoard.gameArr[boxDataIndexNum - 1] = "x";
-					console.log(gameBoard.gameArr + " " + i);
+					console.log(gameBoard.gameArr + " " + playersTurn);
 					selectedBox.textContent = "x";
-					i = 1;
+					playersTurn = 1;
 					turnCount++;
 					gameBoard.turnCounter++;
 					console.log(gameBoard.turnCounter);
                     //changes h2 to say this->
-                    h2.textContent = `player 2, its your turn.`
+                    h2.textContent = `Player 2, its your turn.`
 
 				} else {
 					console.log("Spot is taken. Pick another.");
-					console.log(i);
+					console.log(playersTurn);
 				}
 				if (turnCount >= 4) {
 					gameBoard.checkWinner();
