@@ -14,11 +14,12 @@ const gameBoard = (function () {
 
 	let turnCounter = 0;
 
-    const countLog = () => {
-        console.log(turnCounter);
-    }
-
-	const playGame = () => {};
+	const playGame = () => {
+		displayController.nameSelect();
+		displayController.hideForm();
+		displayController.display();
+	};
+	
 	//Uses switch statement to check if any of the win conditions are met. It defaults to a tie if there is no winner by the end. If game is not finished it will default to a console message telling users game is not over
 	const checkWinner = () => {
 		//win conditions 0,1,2 - 3,4,5 - 6,7,8 - 0,3,6 - 1,4,7 - 2,5,8 - 0,4,8 - 2,4,6 (also each can win in reversed order.)
@@ -130,10 +131,16 @@ const gameBoard = (function () {
 		}
 	};
 
-	return { gameArr, checkWinner, turnCounter, playerOne, playerTwo, countLog };
+	return { gameArr, checkWinner, turnCounter, playerOne, playerTwo, playGame };
 })();
 
 const displayController = (function () {
+	//Elements
+	
+	const gameDiv = document.getElementById("game-board");
+	const body = document.querySelector("body");
+	
+	
 	//This can be used to hide the form.
 	const hideForm = () => {
 		const form = document.getElementById("form");
@@ -167,28 +174,52 @@ const displayController = (function () {
             h2.textContent = `${playerTwo} wins!`
             
         }
+
+
     }
 
-	const display = () => {
-		const gameArr = gameBoard.gameArr;
-		const gameDiv = document.getElementById("game-board");
-		const body = document.querySelector("body");
+	const resetGame = () => {
+		
+		gameBoard.gameArr = ["", "", "", "", "", "", "", "", ""];
+		gameBoard.turnCounter = 0;
+		
+	
+		for (let index = 1; index <= gameBoard.gameArr.length; index++) {
+			
+			const selectedBox = document.querySelector(
+				`[data-index-number="${index}"]`
+			);
+			selectedBox.textContent = "";
+			
+		}
+		// start again from player one
+	}
 
+	const display = () => {
+		//Reset button
+		const resetButton = document.createElement("button")
+		resetButton.setAttribute('id','reset');
+		resetButton.textContent = "Reset"
+		resetButton.setAttribute('onclick', 'displayController.resetGame();')
 		//displays name and whose turn it is under play area.
         const h2 = document.createElement('h2');
         const playerName = gameBoard.playerOne.name;
 		h2.setAttribute('id','turn-message');
         h2.textContent = `${playerName}, its your turn.`
+
 		
 		body.append(h2);
+		body.append(resetButton);
+		
       
 
+		let i = 2;
+		let turnCount = 0;
+		
 
-		let i = 0;
-
-		for (let index = 0; index < gameArr.length; index++) {
+		for (let index = 0; index < gameBoard.gameArr.length; index++) {
 			//This creates the box play area.
-			const selection = gameArr[index];
+			const selection = gameBoard.gameArr[index];
 			const boxElement = document.createElement("button");
         
 
@@ -209,23 +240,25 @@ const displayController = (function () {
 
 				// This checks if square is empty. if it is then it is marked with a X or O. It also checks if square is marked, if it is it does not let user place a marker.
 
-				if (i % 2 == 1 && gameArr[boxDataIndexNum - 1] == "") {
+				if (i % 2 == 1 && gameBoard.gameArr[boxDataIndexNum - 1] == "") {
 					console.log("O was marked");
-					gameArr[boxDataIndexNum - 1] = "o";
-					console.log(gameArr + " " + i);
+					gameBoard.gameArr[boxDataIndexNum - 1] = "o";
+					console.log(gameBoard.gameArr + " " + i);
 					selectedBox.textContent = "o";
-					i++;
+					i = 2;
+					turnCount++;
 					gameBoard.turnCounter++;
 					console.log(gameBoard.turnCounter);
                     //changes h2 to say this->
                     h2.textContent = `${playerName}, its your turn.`
 
-				} else if (i % 2 != 1 && gameArr[boxDataIndexNum - 1] == "") {
+				} else if (i % 2 != 1 && gameBoard.gameArr[boxDataIndexNum - 1] == "") {
                     console.log("X was marked");
-					gameArr[boxDataIndexNum - 1] = "x";
-					console.log(gameArr + " " + i);
+					gameBoard.gameArr[boxDataIndexNum - 1] = "x";
+					console.log(gameBoard.gameArr + " " + i);
 					selectedBox.textContent = "x";
-					i++;
+					i = 1;
+					turnCount++;
 					gameBoard.turnCounter++;
 					console.log(gameBoard.turnCounter);
                     //changes h2 to say this->
@@ -235,14 +268,17 @@ const displayController = (function () {
 					console.log("Spot is taken. Pick another.");
 					console.log(i);
 				}
-				if (i >= 4) {
+				if (turnCount >= 4) {
 					gameBoard.checkWinner();
 				}
 			});
 		}
+		
 	};
 
-	return { display, nameSelect, hideForm, winnersMessage };
+	return { display, nameSelect, hideForm, winnersMessage, resetGame };
 })();
 
 // displayController.display();
+
+//Note when you create a new variable for gameBoard.gameArr ex(let gameArray = gameBoard.gameArr) this creates a whole new array thus not effecting the original.
